@@ -16,7 +16,6 @@ public class Main {
 		
 		Lexical lexico = new Lexical(charArray);
 		Token token = lexico.getToken();
-		Sintatica sintatico = new Sintatica();
 		
 	}
 }

@@ -4,6 +4,7 @@ public class Token {
 	
 	private String descricao;
 	private TipoToken tipoToken;
+
 	
 	public String getDescricao() {
 		return descricao;
