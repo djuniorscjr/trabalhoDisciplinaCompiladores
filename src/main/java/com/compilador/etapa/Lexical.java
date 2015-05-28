@@ -72,7 +72,7 @@ public class Lexical {
 						tokens.add(token);
 					}
 				} else {
-					indice = indice + token.getDescricao().length();
+					indice = token.getIndice() + 1;
 					tokens.add(token);
 				}
 			}
