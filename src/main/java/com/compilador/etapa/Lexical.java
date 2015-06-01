@@ -6,7 +6,9 @@ import java.util.List;
 import com.compilador.modelo.TipoToken;
 import com.compilador.modelo.Token;
 import com.compilador.tipo.Comentario;
+import com.compilador.tipo.ConjuntoDePalavras;
 import com.compilador.tipo.Identificador;
+import com.compilador.tipo.Numero;
 import com.compilador.tipo.PalavraReservada;
 import com.compilador.tipo.Simbolo;
 
@@ -49,20 +51,32 @@ public class Lexical {
 						if (token == null) {
 							Simbolo simbolo = new Simbolo();
 							token = simbolo.classificar(arquivo, indice);
-
-							if (token == null) {
-								StringBuilder sb = new StringBuilder();
-								sb.append(arquivo[indice]);
-								token = new Token();
-								token.setDescricao(sb.toString());
-								token.setTipoToken(TipoToken.NAO_IDENTIFICADO);
-								tokens.add(token);
-								indice++;
-							} else {
+							if(token == null){
+								ConjuntoDePalavras conjuntoDePalavras = new ConjuntoDePalavras();
+								token = conjuntoDePalavras.classificar(arquivo, indice);
+								if(token == null){
+									Numero numero = new Numero();
+									token = numero.classificar(arquivo, indice);
+									if(token == null){
+										StringBuilder sb = new StringBuilder();
+										sb.append(arquivo[indice]);
+										token = new Token();
+										token.setDescricao(sb.toString());
+										token.setTipoToken(TipoToken.NAO_IDENTIFICADO);
+										tokens.add(token);
+										indice++;
+									}else{
+										indice = indice + token.getDescricao().length();
+										tokens.add(token);
+									}
+								}else{
+									indice = indice + token.getDescricao().length();
+									tokens.add(token);
+								}
+							}else{
 								indice = indice + token.getDescricao().length();
 								tokens.add(token);
 							}
-
 						} else {
 							indice = indice + token.getDescricao().length();
 							tokens.add(token);

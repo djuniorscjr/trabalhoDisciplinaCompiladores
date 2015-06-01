@@ -6,6 +6,8 @@ public enum TipoToken {
 	PALAVRA_RESEVADA	("Palavra Reservada"),
 	SIMBOLO_ESPECIAL	("Simbolo Especial"),
 	COMENTARIO			("Comentário"),
+	STRING				("String"),
+	NUMERO				("Número"),
 	NAO_IDENTIFICADO	("Não Especificado");
 	
 	private String decricao;
