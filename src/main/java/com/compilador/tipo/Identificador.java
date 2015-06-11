@@ -2,17 +2,18 @@ package com.compilador.tipo;
 
 
 import com.compilador.Classificacao;
+import com.compilador.erro.Erro;
 import com.compilador.modelo.TipoToken;
 import com.compilador.modelo.Token;
 
 public class Identificador implements Classificacao {
 
 
-	public Token classificar(char[] arquivo, Integer indice) {
+	public Token classificar(char[] arquivo, Integer indice) throws Erro {
 
 		int estado = 0;
 		StringBuilder sb = new StringBuilder();
-		
+		Boolean bool = false;
 		
 		while (indice <= arquivo.length - 1) {
 			switch (estado) {
@@ -66,6 +67,7 @@ public class Identificador implements Classificacao {
 					indice = indice + 1;
 				} else {
 					indice = arquivo.length;
+					bool = true;
 				}
 				break;
 			default:
@@ -74,6 +76,9 @@ public class Identificador implements Classificacao {
 
 		}
 		if (sb.length() > 1) {
+			if(bool){
+				  throw new Erro("Erro Indetificador Inválido");
+			}
 			Token token = new Token();
 			token.setDescricao(sb.toString());
 			token.setTipoToken(TipoToken.IDENTIFICADOR);

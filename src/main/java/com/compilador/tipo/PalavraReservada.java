@@ -70,6 +70,7 @@ public class PalavraReservada implements Classificacao{
 		palavraReservada.add("programa");
 		palavraReservada.add("se");
 		palavraReservada.add("entao");
+		palavraReservada.add("senao");
 		palavraReservada.add("enquanto");
 		palavraReservada.add("faca");
 		palavraReservada.add("ate");
@@ -90,7 +91,7 @@ public class PalavraReservada implements Classificacao{
 		palavraReservada.add("logico");
 		palavraReservada.add("tipo");
 		palavraReservada.add("e");
-		palavraReservada.add("o");
+		palavraReservada.add("ou");
 		palavraReservada.add("nao");
 	}
 

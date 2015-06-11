@@ -1,18 +1,17 @@
 package com.compilador.tipo;
 
-
-
 import com.compilador.Classificacao;
+import com.compilador.erro.Erro;
 import com.compilador.modelo.TipoToken;
 import com.compilador.modelo.Token;
 
-public class Comentario implements Classificacao{
-	
-	
-	public Token classificar(char[] arquivo, Integer indice) {
+public class Comentario implements Classificacao {
+
+	public Token classificar(char[] arquivo, Integer indice) throws Erro {
 		int estado = 0;
 		StringBuilder sb = new StringBuilder();
 		Token token = new Token();
+		Boolean bool = false;
 		while (indice <= arquivo.length - 1) {
 			switch (estado) {
 			case 0:
@@ -48,6 +47,9 @@ public class Comentario implements Classificacao{
 					indice = indice + 1;
 				} else {
 					indice++;
+					if(indice == arquivo.length - 1){ 
+						bool = true;
+					}
 				}
 				break;
 			case 3:
@@ -59,6 +61,9 @@ public class Comentario implements Classificacao{
 				} else {
 					estado = 2;
 					indice++;
+					if(indice == arquivo.length - 1){ 
+						bool = true;
+					}
 				}
 				break;
 			case 4:
@@ -77,17 +82,23 @@ public class Comentario implements Classificacao{
 					indice = indice + 1;
 				} else {
 					indice++;
+					if(indice == arquivo.length - 1){ 
+						bool = true;
+					}
 				}
 				break;
 			case 6:
 				if (arquivo[indice] == '/') {
-					estado = 7;
+					estado = 10;
 					sb.append(arquivo[indice]);
 					token.setIndice(indice);
 					indice = indice + 1;
 				} else {
 					estado = 5;
 					indice++;
+					if(indice == arquivo.length - 1){ 
+						bool = true;
+					}
 				}
 				break;
 			case 7:
@@ -122,17 +133,20 @@ public class Comentario implements Classificacao{
 			}
 
 		}
-		if (sb.length() > 2) {
+		if (sb.length() >= 2) {
+				if(bool){
+				  throw new Erro("Erro Falta finalizar comentario");
+				}
+				token.setDescricao(sb.toString());
+				token.setTipoToken(TipoToken.COMENTARIO);
+					
+				return token;
 			
-			token.setDescricao(sb.toString());
-			token.setTipoToken(TipoToken.COMENTARIO);
-				
-			return token;
+			
 		}
 
 		return null;
 
 	}
-
 
 }

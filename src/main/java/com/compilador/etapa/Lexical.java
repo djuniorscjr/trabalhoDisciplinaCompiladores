@@ -3,6 +3,7 @@ package com.compilador.etapa;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.compilador.erro.Erro;
 import com.compilador.modelo.TipoToken;
 import com.compilador.modelo.Token;
 import com.compilador.tipo.Comentario;
@@ -30,50 +31,63 @@ public class Lexical {
 	}
 
 	public Token getToken() {
+		try {
 
-		while (indice <= max) {
-			if (arquivo[indice] == '\n' || arquivo[indice] == '\r'
-					|| arquivo[indice] == '\t'
-					|| Character.isSpaceChar(arquivo[indice])) {
-				indice++;
-			} else {
+			while (indice <= max) {
+				if (arquivo[indice] == '\n' || arquivo[indice] == '\r'
+						|| arquivo[indice] == '\t'
+						|| Character.isSpaceChar(arquivo[indice])) {
+					indice++;
+				} else {
 
-				token = new Token();
+					token = new Token();
 
-				Comentario comentario = new Comentario();
-				token = comentario.classificar(arquivo, indice);
-				if (token == null) {
-					Identificador identificador = new Identificador();
-					token = identificador.classificar(arquivo, indice);
+					Comentario comentario = new Comentario();
+					token = comentario.classificar(arquivo, indice);
+
 					if (token == null) {
-						PalavraReservada palavraReservada = new PalavraReservada();
-						token = palavraReservada.classificar(arquivo, indice);
+						Identificador identificador = new Identificador();
+						token = identificador.classificar(arquivo, indice);
 						if (token == null) {
-							Simbolo simbolo = new Simbolo();
-							token = simbolo.classificar(arquivo, indice);
-							if(token == null){
-								ConjuntoDePalavras conjuntoDePalavras = new ConjuntoDePalavras();
-								token = conjuntoDePalavras.classificar(arquivo, indice);
-								if(token == null){
-									Numero numero = new Numero();
-									token = numero.classificar(arquivo, indice);
-									if(token == null){
-										StringBuilder sb = new StringBuilder();
-										sb.append(arquivo[indice]);
-										token = new Token();
-										token.setDescricao(sb.toString());
-										token.setTipoToken(TipoToken.NAO_IDENTIFICADO);
-										tokens.add(token);
-										indice++;
-									}else{
-										indice = indice + token.getDescricao().length();
+							PalavraReservada palavraReservada = new PalavraReservada();
+							token = palavraReservada.classificar(arquivo,
+									indice);
+							if (token == null) {
+								Simbolo simbolo = new Simbolo();
+								token = simbolo.classificar(arquivo, indice);
+								if (token == null) {
+									ConjuntoDePalavras conjuntoDePalavras = new ConjuntoDePalavras();
+									token = conjuntoDePalavras.classificar(
+											arquivo, indice);
+									if (token == null) {
+										Numero numero = new Numero();
+										token = numero.classificar(arquivo,
+												indice);
+										if (token == null) {
+											StringBuilder sb = new StringBuilder();
+											sb.append(arquivo[indice]);
+											token = new Token();
+											token.setDescricao(sb.toString());
+											token.setTipoToken(TipoToken.NAO_IDENTIFICADO);
+											tokens.add(token);
+											indice++;
+										} else {
+											indice = indice
+													+ token.getDescricao()
+															.length();
+											tokens.add(token);
+										}
+									} else {
+										indice = indice
+												+ token.getDescricao().length();
 										tokens.add(token);
 									}
-								}else{
-									indice = indice + token.getDescricao().length();
+								} else {
+									indice = indice
+											+ token.getDescricao().length();
 									tokens.add(token);
 								}
-							}else{
+							} else {
 								indice = indice + token.getDescricao().length();
 								tokens.add(token);
 							}
@@ -82,21 +96,21 @@ public class Lexical {
 							tokens.add(token);
 						}
 					} else {
-						indice = indice + token.getDescricao().length();
+						indice = token.getIndice() + 1;
 						tokens.add(token);
 					}
-				} else {
-					indice = token.getIndice() + 1;
-					tokens.add(token);
 				}
 			}
+		
+			for (Token token1 : tokens) {
+				System.out.println(token1.getTipoToken().getDecricao() + " - "
+						+ token1.getDescricao());
+	
+			}
+		} catch (Erro e) {
+			System.err.println(e.getMessage());
 		}
-		for (Token token1 : tokens) {
-			System.out.println(token1.getTipoToken().getDecricao() + " - "
-					+ token1.getDescricao());
-
-		}
-		return token;
+		return token;	
 	}
 
 	public char[] getArquivo() {
