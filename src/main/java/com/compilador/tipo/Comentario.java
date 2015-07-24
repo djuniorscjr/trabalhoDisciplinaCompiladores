@@ -43,7 +43,6 @@ public class Comentario implements Classificacao {
 			case 2:
 				if(arquivo[indice] == '*'){ 
 					estado = 3;
-					sb.append(arquivo[indice]);
 					indice = indice + 1;
 				} else {
 					indice++;
@@ -55,6 +54,7 @@ public class Comentario implements Classificacao {
 			case 3:
 				if (arquivo[indice] == '/') {
 					estado = 10;
+					sb.append(arquivo[indice - 1]);
 					sb.append(arquivo[indice]);
 					token.setIndice(indice);
 					indice = indice + 1;
@@ -78,7 +78,6 @@ public class Comentario implements Classificacao {
 			case 5:
 				if(arquivo[indice] == '/'){ 
 					estado = 6;
-					sb.append(arquivo[indice]);
 					indice = indice + 1;
 				} else {
 					indice++;
@@ -90,6 +89,7 @@ public class Comentario implements Classificacao {
 			case 6:
 				if (arquivo[indice] == '/') {
 					estado = 10;
+					sb.append(arquivo[indice - 1]);
 					sb.append(arquivo[indice]);
 					token.setIndice(indice);
 					indice = indice + 1;
@@ -113,7 +113,6 @@ public class Comentario implements Classificacao {
 			case 8:
 				if(arquivo[indice] == '\r'){ 
 					estado = 9;
-					sb.append(arquivo[indice]);
 					indice = indice + 1;
 				}else{
 					indice++;
@@ -122,7 +121,6 @@ public class Comentario implements Classificacao {
 			case 9:
 				if (arquivo[indice] == '\n') {
 					estado = 10;
-					sb.append(arquivo[indice]);
 					token.setIndice(indice);
 					indice = indice + 1;
 				} 

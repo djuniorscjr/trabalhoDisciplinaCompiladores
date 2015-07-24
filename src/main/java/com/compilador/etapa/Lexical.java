@@ -69,48 +69,44 @@ public class Lexical {
 											token = new Token();
 											token.setDescricao(sb.toString());
 											token.setTipoToken(TipoToken.NAO_IDENTIFICADO);
-											tokens.add(token);
 											indice++;
+											return token;
 										} else {
 											indice = indice
 													+ token.getDescricao()
 															.length();
-											tokens.add(token);
+											return token;
 										}
 									} else {
 										indice = indice
 												+ token.getDescricao().length();
-										tokens.add(token);
+										return token;
 									}
 								} else {
 									indice = indice
 											+ token.getDescricao().length();
-									tokens.add(token);
+									return token;
 								}
 							} else {
 								indice = indice + token.getDescricao().length();
-								tokens.add(token);
+								return token;
 							}
 						} else {
 							indice = indice + token.getDescricao().length();
-							tokens.add(token);
+							return token;
 						}
 					} else {
 						indice = token.getIndice() + 1;
-						tokens.add(token);
+						return token;
 					}
 				}
 			}
-		
-			for (Token token1 : tokens) {
-				System.out.println(token1.getTipoToken().getDecricao() + " - "
-						+ token1.getDescricao());
-	
-			}
+
 		} catch (Erro e) {
+
 			System.err.println(e.getMessage());
 		}
-		return token;	
+		return null;
 	}
 
 	public char[] getArquivo() {
